@@ -1,8 +1,3 @@
-/*
-	When using require() in the top-level HTML page
-	(or top-level script file that does not define a module),
-	a configuration object can be passed as the first option:
-*/
 require.config({
 	baseUrl: 'app',
 	paths: {
@@ -10,8 +5,8 @@ require.config({
 		jquery: 	'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min',
 		react: 		'https://unpkg.com/react@17/umd/react.development',
 		react_dom: 	'https://unpkg.com/react-dom@17/umd/react-dom.development',
-		typescript: 'https://cdnjs.cloudflare.com/ajax/libs/typescript/4.6.2/typescript',
-		underscore: 'https://underscorejs.org/underscore-esm',
+        typescript: 'https://cdnjs.cloudflare.com/ajax/libs/typescript/4.6.2/typescript.min',
+        underscore: 'https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.13.2/underscore-min',
 		vue: 		'https://cdn.jsdelivr.net/npm/vue@2/dist/vue',
 
 		/* Models
@@ -44,32 +39,35 @@ require.config({
 	},
 
 	shim: {
+		underscore: {
+			exports: '_'
+		},
 		backbone: {
 			/* this makes sure: jquery and underscore are loaded before backbone */
 			deps: [
-				'jquery',
-				'underscore'
+				'underscore',
+				'jquery'
 			],
 			exports: 'Backbone'
-		},
-		underscore: {
-			exports: '_'
 		}
-	},
+	}
 
-	waitSeconds: 10
+//	waitSeconds: 10
 });
 
-require(['collectionView', 'collection', 'dailyModel'],
-	function (collectionView, collection, dailyModel) {
-		new route();
+define(['collectionView', 'collection', 'route', 'aggregateModel', 'dailyModel', 'groupModel', 'previousModel'],
+	function (collectionView, collection, route, aggregateModel, dailyModel, groupModel, previousModel) {
+		new route()
 		Backbone.history.start();
 
 		new collectionView({
 			collection: new collection([
+				new aggregateModel({}),
 				new dailyModel({
                     ticker: "MSFT"
-				})
+				}),
+				new groupModel({}),
+				new previousModel({})
 			])
 		});
 	});
