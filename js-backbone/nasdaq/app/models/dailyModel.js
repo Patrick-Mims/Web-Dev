@@ -8,13 +8,14 @@ define(['baseModel'],
 				this.set('baseurl', 'https://api.polygon.io/');
 				this.set('key', 'siPBL4eggC37aTDLXnLc1Htjsz31ECq9');
 				this.set('ticker', this.get('ticker'));
-				this.set('version', 'v2');
+				this.set('date', this.get('date'));
+				this.set('version', 'v1');
 
                 this.fetch();
 			},
 
 			url: function () {
-				return this.get('baseurl') + this.get('version') + "/aggs/ticker/" + this.get('ticker') + "/prev?adjusted=" + this.get('adjusted') + "&apiKey=" + this.get("key");
+				return this.get('baseurl') + this.get('version') + "/open-close/" + this.get('ticker') + "/" + this.get('date') + "?adjusted=" + this.get('adjusted') + "&apiKey=" + this.get("key");
 			}
 		});
 		return dailyModel;

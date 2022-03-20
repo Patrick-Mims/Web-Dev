@@ -1,39 +1,113 @@
 <!doctype html>
 <html lang="en">
 
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
-		crossorigin="anonymous">
-	<title>Stock Market</title>
-</head>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+        <title>Stock Market</title>
+    </head>
 
-<body>
-	<h1>Stock Market Application</h1>
-	<div id="aggregates"></div>
-	<div id="daily"></div>
-	<div id="grouped"></div>
-	<div id="previous"></div>
+    <body>
+        <div class="container">
+            <h1>Stock Market</h1>
+            <div id="v-search">
+                <input v-model="msg"> 
+                <button v-on:click="search_ticker">Search</button>
+            </div>
 
-	<script type="text/template" id="aggregates-tempate">
-		<div>Aggregates Information</div>
-	</script>
+            <div id="component_greeting">
+                <greeting message="Hello"></greeting>
+            </div>
 
-	<script type="text/template" id="daily-tempate">
-		<div>Daily Information</div>
-	</script>
+            <div id="component_market">
+                <market message="Good Bye"></market>
+            </div>
 
-	<script type="text/template" id="grouped-tempate">
-		<div>Grouped Information</div>
-	</script>
+            <div id="component_data">
+                <component v-bind:is="msg"></component>
+            </div>
 
-	<script type="text/template" id="previous-tempate">
-		<div>Previous Information</div>
-	</script>
+            <div id="aggregate"></div>
+            <div class="row">
+                <div class="col-12">
+                <div id="daily"></div>
+                </div>
+            </div>
+            <div id="group"></div>
+            <div id="previous"></div>
+            <div id="weather"></div>
+            <div id="v-item"></div>
+                <div id="v-daily">
+                <div>NASDAQ: {{ticker}}</div>
+                </div>
+                <div id="v-open">
+                Open: {{open}}
+                </div>
+            </div>
+            <div id="v-grouped"></div>
+            <div id="v-previous"></div>
+        </div>
 
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-	<script data-main="app/app" src="https://requirejs.org/docs/release/2.3.6/comments/require.js"></script>
-</body>
+        <script type="text/template" id="aggregate-template">
+            <div>Aggregates Information</div>
+        </script>
+
+        <script type="text/template" id="daily-template">
+            <div class="row">
+                <div class="row">
+                    <div class="col">
+                        NASDAQ: <%= this.model.get("symbol") %>
+                    </div>
+                </div>
+                <div class="col-5">
+                    <div class="row">
+                        <div class="col">Open</div>
+                        <div class="col"><%= this.model.get("open") %></div>
+                    </div>
+                    <div class="row">
+                        <div class="col">High</div>
+                        <div class="col"><%= this.model.get("high") %></div>
+                    </div>
+                    <div class="row">
+                        <div class="col">Low</div>
+                        <div class="col"><%= this.model.get("low") %></div>
+                    </div>
+                </div>
+                <div class="col-7">
+                    <div class="row">
+                        <div class="col">Close</div>
+                        <div class="col"><%= this.model.get("close") %></div>
+                    </div>
+                    <div class="row">
+                        <div class="col">Volume</div>
+                        <div class="col"><%= this.model.get("volume") %></div>
+                    </div>
+                    <div class="row">
+                        <div class="col">After Hrs</div>
+                        <div class="col"><%= this.model.get("afterHours") %></div>
+                    </div>
+                </div>
+            </div>
+        </script>
+
+        <script type="text/template" id="group-template">
+            <div>Group Information</div>
+        </script>
+
+        <script type="text/template" id="previous-template">
+            <div>Previous Information</div>
+        </script>
+
+        <script type="text/template" id="weather-template">
+            <div>Weather</div>
+            <% _.each(nwsAlerts.watch, function(json) { %>
+                <div><%= json.type %></div>
+            <% }); %>
+        </script>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script data-main="app/app" src="https://requirejs.org/docs/release/2.3.6/comments/require.js"></script>
+    </body>
 
 </html>

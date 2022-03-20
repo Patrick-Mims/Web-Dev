@@ -1,20 +1,53 @@
-define(['baseView', 'vue'], 
-    function(BaseView, Vue) {
-        return dailyView = BaseView.extend({
+define(['baseView', 'vue', 'underscore'], 
+    function(BaseView, vue, _) {
+        var dailyView = BaseView.extend({
             initialize: function() {
                 console.log("init -> dailyView");
+
+                if(_.isMatch(this.model.attributes, {ticker: "AAPL" })) {
+                    console.log("Company Information: Apple Computer");
+                } else {
+                    console.log("No Record on File");
+                }
+
                 this.listenTo(this.model, 'change', this.render);
 
-                new Vue({
-                    el: "v-daily",
+                /*
+                new vue({
+                    el: "#v-daily",
                     data: {
-                        msg_daily: "vue daily message"
+                        ticker: this.model.toJSON()
+                    },
+                    methods: {
+                        switchTicker: function() {
+                            this.ticker = "GOOG" 
+                        }
                     }
-                })
+                });
+                */
+
+                /*
+                new vue({
+                    el: "#v-open",
+                    data: {
+                        open: this.model.attributes
+                    }
+                });
+                */
+
             },
 
-            el: #daily,
+            events: {
+                'search':'filter'
+            },
+
+            filter: function(e) {
+                e.preventDefault();
+                alert("Hello!");
+            },
 
             template: _.template($("#daily-template").html())
         });
+
+        return dailyView;
     });
