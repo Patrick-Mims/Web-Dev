@@ -64,7 +64,8 @@ define(['collectionView', 'collection', 'route', 'aggregateModel', 'dailyModel',
 			collection: new collection([
 				new aggregateModel({}),
 				new dailyModel({
-                    ticker: "MSFT"
+                    ticker: "AAPL",
+                    date: "2022-03-17"
 				}),
 				new groupModel({}),
 				new previousModel({})
