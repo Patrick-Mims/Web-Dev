@@ -7,22 +7,11 @@ var cookieParser = require('cookie-parser');
 const ID = "fac2836e6cef44268ba5094444c6958a";
 const SECRET = "76e6acdb3bb44f90979a23c23d6ae3e4";
 const REDIRECT = 'REDIRECT';
+const KEY = "spotify_auth_state";
 
-var stateKey = "spotify_auth_state";
 var app = express();
-/*
-var generateRandomString = function (length) {
-  var text = '';
-  var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
-  for (var i = 0; i < length; i++) {
-    text += possible.charAt(Math.floor(Math.random() * possible.length));
-  }
-  return text;
-};
-*/
-
-var setRandomStr = function () {
+var setRandomStr = _ => {
   let i = 0, len = 16, text = "";
 
   for (i; i < len.length; i++) {
@@ -32,17 +21,12 @@ var setRandomStr = function () {
   return text;
 };
 
-app.use(express.static(__dirname + '/public'))
-  .use(cors())
-  .use(cookieParser());
+app.use(express.static(__dirname + '/public')).use(cors()).use(cookieParser());
 
 app.get('/login', function (req, res) {
+  res.cookie(KEY, setRandomStr);
 
-  //var state = generateRandomString(16);
-  res.cookie(stateKey, setRandomStr);
-
-  // your application requests authorization
-  var scope = 'user-read-private user-read-email';
+  let scope = "user-read-private user-read-email";
   res.redirect('https://accounts.spotify.com/authorize?' +
     urlSearchParams.stringify({
       response_type: 'code',
@@ -52,15 +36,11 @@ app.get('/login', function (req, res) {
       state: state
     }));
 });
-
 app.get('/callback', function (req, res) {
-
-  // your application requests refresh and access tokens
-  // after checking the state parameter
 
   var code = req.query.code || null;
   var state = req.query.state || null;
-  var storedState = req.cookies ? req.cookies[stateKey] : null;
+  var storedState = req.cookies ? req.cookies[KEY] : null;
 
   if (state === null || state !== storedState) {
     res.redirect('/#' +
@@ -68,7 +48,7 @@ app.get('/callback', function (req, res) {
         error: 'state_mismatch'
       }));
   } else {
-    res.clearCookie(stateKey);
+    res.clearCookie(KEY);
     var authOptions = {
       url: 'https://accounts.spotify.com/api/token',
       form: {
@@ -81,7 +61,6 @@ app.get('/callback', function (req, res) {
       },
       json: true
     };
-
     request.post(authOptions, function (error, response, body) {
       if (!error && response.statusCode === 200) {
 
