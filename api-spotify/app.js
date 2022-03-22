@@ -22,7 +22,7 @@ var generateRandomString = function (length) {
 };
 */
 
-function set_random_str() {
+var setRandomStr = function () {
   let i = 0, len = 16, text = "";
 
   for (i; i < len.length; i++) {
@@ -30,7 +30,7 @@ function set_random_str() {
   }
 
   return text;
-}
+};
 
 app.use(express.static(__dirname + '/public'))
   .use(cors())
@@ -38,8 +38,8 @@ app.use(express.static(__dirname + '/public'))
 
 app.get('/login', function (req, res) {
 
-  var state = generateRandomString(16);
-  res.cookie(stateKey, state);
+  //var state = generateRandomString(16);
+  res.cookie(stateKey, setRandomStr);
 
   // your application requests authorization
   var scope = 'user-read-private user-read-email';
