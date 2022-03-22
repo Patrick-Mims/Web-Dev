@@ -1,0 +1,13 @@
+https://api.polygon.io/v2/open-close/AAPL/2020-10-14?adjusted=true&apiKey=siPBL4eggC37aTDLXnLc1Htjsz31ECq9 
+https://api.polygon.io/v1/open-close/AAPL/2020-10-14?adjusted=true&apiKey=siPBL4eggC37aTDLXnLc1Htjsz31ECq9
+
+<div class="col-4">
+    <div>Open&nbsp;<%= json.o %></div>
+    <div>High&nbsp;<%= json.h %></div>
+    <div>Low&nbsp;<%= json.l %></div>
+</div>
+<div class="col-4">
+    <div>Close&nbsp;<%= json.c %></div>
+    <div>High&nbsp;<%= json.h %></div>
+    <div>Low&nbsp;<%= json.l %></div>
+</div>
