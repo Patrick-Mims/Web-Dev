@@ -1,18 +1,15 @@
-/* DEPRECATED: request 
- * REPLACEMENT: got
- * var request = require('request'); // "Request" library
- * */
 var express = require('express');
 var cors = require('cors');
-/* DEPRECATED:  querystring
- * REPLACEMENT:  URLSearchParams
- * var querystring = require('querystring');
- * */
+var got = require('got');
+var queryString = require('URLSearchParams');
 var cookieParser = require('cookie-parser');
 
 var client_id = 'CLIENT_ID'; // Your client id
 var client_secret = 'CLIENT_SECRET'; // Your secret
 var redirect_uri = 'REDIRECT_URI'; // Your redirect uri
+
+var stateKey = 'spotify_auth_state';
+var app = express();
 var generateRandomString = function (length) {
   var text = '';
   var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -22,10 +19,6 @@ var generateRandomString = function (length) {
   }
   return text;
 };
-
-var stateKey = 'spotify_auth_state';
-
-var app = express();
 
 app.use(express.static(__dirname + '/public'))
   .use(cors())
@@ -39,7 +32,7 @@ app.get('/login', function (req, res) {
   // your application requests authorization
   var scope = 'user-read-private user-read-email';
   res.redirect('https://accounts.spotify.com/authorize?' +
-    querystring.stringify({
+    queryString.stringify({
       response_type: 'code',
       client_id: client_id,
       scope: scope,
@@ -59,7 +52,7 @@ app.get('/callback', function (req, res) {
 
   if (state === null || state !== storedState) {
     res.redirect('/#' +
-      querystring.stringify({
+      queryString.stringify({
         error: 'state_mismatch'
       }));
   } else {
