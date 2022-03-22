@@ -10,6 +10,7 @@ const REDIRECT = 'REDIRECT';
 
 var stateKey = "spotify_auth_state";
 var app = express();
+/*
 var generateRandomString = function (length) {
   var text = '';
   var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -19,6 +20,17 @@ var generateRandomString = function (length) {
   }
   return text;
 };
+*/
+
+function set_random_str() {
+  let i = 0, len = 16, text = "";
+
+  for (i; i < len.length; i++) {
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+  }
+
+  return text;
+}
 
 app.use(express.static(__dirname + '/public'))
   .use(cors())
