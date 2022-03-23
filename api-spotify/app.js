@@ -1,7 +1,28 @@
-var express = require('express');
+const express = require('express');
+const app = express();
+const port = 3000;
+
+app.get('/', (req, res) => {
+  res.send("I love white women");
+});
+
+app.get('/callback', (req, res) => {
+});
+
+app.get('/login', (req, res) => {
+});
+
+app.get('/refresh', (req, res) => {
+});
+
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}`);
+});
+
+/*
 var cors = require('cors');
 var got = require('got');
-var urlSearchParams = require('URLSearchParams');
+var searchParams = require('URLSearchParams');
 var cookieParser = require('cookie-parser');
 
 const ID = "fac2836e6cef44268ba5094444c6958a";
@@ -24,6 +45,10 @@ var setRandomStr = _ => {
 app.use(express.static(__dirname + '/public')).use(cors()).use(cookieParser());
 
 app.get('/login', function (req, res) {
+
+});
+
+app.get('/login', function (req, res) {
   res.cookie(KEY, setRandomStr);
 
   let scope = "user-read-private user-read-email";
@@ -44,7 +69,7 @@ app.get('/callback', function (req, res) {
 
   if (state === null || state !== storedState) {
     res.redirect('/#' +
-      urlSearchParams.stringify({
+      searchParams.stringify({
         error: 'state_mismatch'
       }));
   } else {
@@ -73,22 +98,17 @@ app.get('/callback', function (req, res) {
           json: true
         };
 
-        // use the access token to access the Spotify Web API
         request.get(options, function (error, response, body) {
           console.log(body);
         });
 
-        // we can also pass the token to the browser to make requests from there
         res.redirect('/#' +
-          urlSearchParams.stringify({
+          searchParams.stringify({
             access_token: access_token,
             refresh_token: refresh_token
           }));
       } else {
-        res.redirect('/#' +
-          urlSearchParams.stringify({
-            error: 'invalid_token'
-          }));
+        res.redirect('/#' + searchParams.stringify({ error: 'invalid_token' }));
       }
     });
   }
@@ -118,5 +138,14 @@ app.get('/refresh_token', function (req, res) {
   });
 });
 
+app.get('/index', function (req, res) {
+});
+
+
+app.get('/callback', function (req, res) {
+});
+
 console.log('Listening on 8888');
 app.listen(8888);
+*/
+
