@@ -1,24 +1,52 @@
 const express = require('express');
+const cookieParser = require('cookie-parser');
 const app = express();
 const port = 3000;
 
+const get_state_key = function () {
+  return "spotify_auth_state";
+};
+
+app.use(express.static('public'));
+
+/* Routing
+ * */
 app.get('/', (req, res) => {
-  res.send("I love white women");
+  res.send('index');
 });
 
 app.get('/callback', (req, res) => {
+  res.send('callback');
 });
 
 app.get('/login', (req, res) => {
+  let get_random_string = () => {
+    let key = "";
+    let list = "";
+    let scope = "user-read-private user-read-email";
+
+    list = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+    for (let i = 0; i < 16; i++) {
+      key += list.charAt(Math.floor(Math.random() * list.length));
+    }
+
+    return key;
+  };
+
+  res.cookie(get_state_key(), get_random_string());
+  console.log("Random String: ", get_random_string());
+
+  /* res.redirect... */
 });
 
 app.get('/refresh', (req, res) => {
+  res.send('route refresh');
 });
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+  console.log(`Listening on port ${port}`);
 });
-
 /*
 var cors = require('cors');
 var got = require('got');
