@@ -1,40 +1,29 @@
-/* loc 163 
-const express = require('express');
-const cookieParser = require('cookie-parser');
-const path = require('path');
-const usp = require('UrlSearchParams');
-
-const app = express();
-const port = 3000;
-
-const get_client_id = function () {
-  return "499735ede6bc405d86a72b5356799bc3";
-};
-
-const get_client_secret = function () {
-  return "43605fe4083b4c1591464f3644939ff";
-};
-
-const get_redirect_uri = function () {
-  return "http://192.168.1.115";
-};
-*/
-
+/* loc 163 */
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const express = require('express');
 const querystring = require('querystring');
 const request = require('request');
 
-const client_id =       "499735ede6bc405d86a72b5356799bc3";
-const client_secret =   "43605fe4083b4c1591464f3644939ff";
-const redirect_uri =    "https://192.168.1.158:8888/callback"; 
+const get_port_number() {
+    return 3000;
+}
 
-const port = 3000;
+const get_client_id = function () {
+    return "499735ede6bc405d86a72b5356799bc3";
+};
 
-var stateKey = 'spotify_auth_state';
+const get_client_secret = function () {
+    return "43605fe4083b4c1591464f3644939ff";
+};
 
-var app = express();
+const get_redirect_uri = function () {
+    return "http://192.168.1.115:8888/callback";
+};
+
+const stateKey = 'spotify_auth_state';
+const app = express();
+const port = get_port_number();
 
 app.use(express.static(__dirname + '/public'))
     .use(cors())
@@ -66,9 +55,9 @@ app.get('/login', function(req, res) {
     res.redirect("https://accounts.spotify.com/authorize?" +
         querystring.stringify({
             response_type: "code",
-            client_id: client_id,
+            client_id: get_client_id(),
             scope: scope,
-            redirect_uri: redirect_uri,
+            redirect_uri: get_redirect_id(),
             state: state  
         }));
 });
@@ -97,7 +86,7 @@ app.get('/callback', function(req, res) {
                 grant_type: 'authorization_code'
             },
             headers: {
-                'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64'))
+                'Authorization': 'Basic ' + (new Buffer(get_client_id() + ':' + get_client_secret).toString('base64'))
             },
             json: true
         };
@@ -136,12 +125,11 @@ app.get('/callback', function(req, res) {
 });
 
 app.get('/refresh_token', function(req, res) {
-
     // requesting access token from refresh token
     var refresh_token = req.query.refresh_token;
     var authOptions = {
         url: 'https://accounts.spotify.com/api/token',
-        headers: { 'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64')) },
+        headers: { 'Authorization': 'Basic ' + (new Buffer(get_client_id() + ':' + get_client_secret).toString('base64')) },
         form: {
             grant_type: 'refresh_token',
             refresh_token: refresh_token
