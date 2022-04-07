@@ -30,6 +30,8 @@ const client_id =       "499735ede6bc405d86a72b5356799bc3";
 const client_secret =   "43605fe4083b4c1591464f3644939ff";
 const redirect_uri =    "https://192.168.1.158:8888/callback"; 
 
+const port = 3000;
+
 var stateKey = 'spotify_auth_state';
 
 var app = express();
@@ -157,6 +159,6 @@ app.get('/refresh_token', function(req, res) {
     });
 });
 
-console.log('Listening on 8888');
-app.listen(8888);
-
+app.listen(port, () => {
+    console.log(`api-spotify app listening on port -> ${port}`);
+});
