@@ -23,7 +23,7 @@ const get_redirect_uri = function () {
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const express = require('express');
-const querystring = require('UrlSearchParams');
+const querystring = require('querystring');
 const request = require('request');
 
 const client_id =       "499735ede6bc405d86a72b5356799bc3";
@@ -34,49 +34,40 @@ var stateKey = 'spotify_auth_state';
 
 var app = express();
 
-
 app.use(express.static(__dirname + '/public'))
     .use(cors())
     .use(cookieParser());
 
 app.get('/login', function(req, res) {
-    let get_random_string = () => {
+
+    console.log("Login Function");
+
+    let scope = "user-read-private user-read-email";
+
+    let generate_string = () => {
         let key = "";
         let list = "";
-        let scope = "user-read-private user-read-email";
 
         list = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
         for(let i = 0; i < 16; i++) {
-            key += list.charAt(Math.floor(Math.random() * list.length);)
+            key += list.charAt(Math.floor(Math.random() * list.length));
         }
 
         return key;
     };
 
-    /*
-    var state = generateRandomString(16);
-    var generateRandomString = function(length) {
-        var text = '';
-        var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
-        for (var i = 0; i < length; i++) {
-            text += possible.charAt(Math.floor(Math.random() * possible.length));
-        }
-        return text;
-    };
-    */
+    let state = generate_string();
 
     res.cookie(stateKey, state);
 
-    var scope = 'user-read-private user-read-email';
-    res.redirect('https://accounts.spotify.com/authorize?' +
+    res.redirect("https://accounts.spotify.com/authorize?" +
         querystring.stringify({
-            response_type: 'code',
+            response_type: "code",
             client_id: client_id,
             scope: scope,
             redirect_uri: redirect_uri,
-            state: state
+            state: state  
         }));
 });
 
