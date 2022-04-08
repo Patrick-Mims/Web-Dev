@@ -5,10 +5,6 @@ const express = require('express');
 const querystring = require('querystring');
 const request = require('request');
 
-const get_port_number() {
-    return 3000;
-}
-
 const get_client_id = function () {
     return "499735ede6bc405d86a72b5356799bc3";
 };
@@ -23,7 +19,7 @@ const get_redirect_uri = function () {
 
 const stateKey = 'spotify_auth_state';
 const app = express();
-const port = get_port_number();
+const port = 3000;
 
 app.use(express.static(__dirname + '/public'))
     .use(cors())
@@ -49,6 +45,7 @@ app.get('/login', function(req, res) {
     };
 
     let state = generate_string();
+    console.log("state-> ", state);
 
     res.cookie(stateKey, state);
 
@@ -57,16 +54,12 @@ app.get('/login', function(req, res) {
             response_type: "code",
             client_id: get_client_id(),
             scope: scope,
-            redirect_uri: get_redirect_id(),
+            redirect_uri: get_redirect_uri(),
             state: state  
         }));
 });
 
 app.get('/callback', function(req, res) {
-
-    // your application requests refresh and access tokens
-    // after checking the state parameter
-
     var code = req.query.code || null;
     var state = req.query.state || null;
     var storedState = req.cookies ? req.cookies[stateKey] : null;
